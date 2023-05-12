@@ -1,0 +1,114 @@
+.messenger {
+  padding: 20px 0 0 0;
+  margin: 0 auto;
+  background-color: #f0f2f5;
+  height: calc(100vh - 40px);
+  max-width: 80%;
+  display: flex;
+  .wrapper-contact-list {
+    min-width: 300px;
+    max-width: 30%;
+    .header-contact-list {
+      padding: 10px 20px;
+
+      .button-chat {
+        margin-right: 10px;
+      }
+    }
+
+    .contact-list {
+      margin-top: 10px;
+      height: 823px;
+      overflow: auto;
+      background-color: #fff;
+      min-height: 100%;
+      .wrapper-contact {
+        height: 72px;
+        padding: 10px 13px;
+        display: flex;
+        align-items: stretch;
+        cursor: pointer;
+        background-color: #fff;
+        &:hover {
+          background-color: #f5f6f6;
+        }
+
+        img {
+          border-radius: 50%;
+        }
+        .wrapper-name-contact {
+          border-bottom: solid 1px #eee;
+          width: 100%;
+          margin-left: 10px;
+
+          .name-contact {
+            line-height: 21px;
+            font-size: 15px;
+            color: #111b21;
+          }
+        }
+      }
+    }
+  }
+
+  .wrapper-place-message {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    .header-place-message {
+      min-height: 44px;
+    }
+
+    .wrapper-place-message {
+      display: flex;
+      flex-direction: column-reverse;
+      width: 100%;
+      word-wrap: break-word;
+      padding: 15px;
+      overflow-y: scroll;
+      font-size: 14px;
+      color: #111b21;
+      .place-message-incoming {
+        padding: 6px 7px 8px 9px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 1px 0.5px rgba(11, 20, 26, 0.13);
+        margin-bottom: 5px;
+        width: fit-content;
+        max-width: 70%;
+      }
+
+      .place-message-outgoing {
+        max-width: 70%;
+        padding: 6px 7px 8px 9px;
+        background-color: #d9fdd3;
+        border-radius: 8px;
+        box-shadow: 0 1px 0.5px rgba(11, 20, 26, 0.13);
+        margin-bottom: 5px;
+        width: fit-content;
+        margin-left: auto;
+      }
+
+      .place-disable {
+        display: none;
+      }
+    }
+
+    .input-message {
+      height: 62px;
+      width: 100%;
+      padding: 5px 16px;
+      display: flex;
+
+      input{
+        width: 100%;
+        height: fit-content;
+        margin: 5px 8px;
+        padding: 9px 12px;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+.loginpage {
+  height: 100%;
+  .wrapper {
+    height: 100%;
+    form {
+      background-color: #f0f2f5;
+      margin: 0 auto;
+      max-width: 300px;
+      padding: 20px;
+      margin-top: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(11,20,26,.05);
+      input {
+        max-width: 300px;
+        margin-bottom: 20px;
+        padding: 5px 6px;
+        border-radius: 3px;
+      }
+    }
+  }
+}
