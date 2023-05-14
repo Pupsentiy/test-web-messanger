@@ -1,6 +1,8 @@
 
-import LoginPage from "../pages/login/LoginPage";
-import MessengerPage from "../pages/messenger/MessengerPage";
+import { MemoExoticComponent } from "react";
+import LoginPage from "../pages/loginPage/LoginPage";
+import MessengerPage from "../pages/MessengerPage/MessengerPage";
+
 
 export type TRoutesConfig = {
   [key: string]: {

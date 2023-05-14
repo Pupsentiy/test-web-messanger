@@ -1,9 +1,18 @@
+import { getFromLocalStorage } from "../helpers/localStorage.helpers";
+
+const dataAuth = getFromLocalStorage("auth")
+  ? JSON.parse(getFromLocalStorage("auth") || "{}")
+  : {};
+
 export const host: string = "https://api.green-api.com";
-export const idInstance: string = "1101819326";
-export const apiTokenInstance: string =
-  "45e9266f66ef44418deb564a74ce3aa6c29ee8eaa07144dc94";
+export const idInstance: string = dataAuth.idInstance;
+export const apiTokenInstance: string = dataAuth.apiTokenInstance;
 
 export const urlSendMessage: string = `${host}/waInstance${idInstance}/SendMessage/${apiTokenInstance}`;
 export const urlGetChats: string = `${host}/waInstance${idInstance}/GetChats/${apiTokenInstance}`;
 export const urlGetContacts: string = `${host}/waInstance${idInstance}/GetContacts/${apiTokenInstance}`;
 export const urlGetChatHistory: string = `${host}/waInstance${idInstance}/GetChatHistory/${apiTokenInstance}`;
+export const urlGetChatMessage: string = `${host}/waInstance${idInstance}/getMessage/${apiTokenInstance}`;
+export const urlGetReceiveNotification: string = `${host}/waInstance${idInstance}/receiveNotification/${apiTokenInstance}`;
+export const urlDelDeleteNotification: string = `${host}/waInstance${idInstance}/deleteNotification/${apiTokenInstance}/`;
+export const urlGetStateInstance: string = `${host}/waInstance${idInstance}/getStateInstance/${apiTokenInstance}/`;

@@ -1,0 +1,36 @@
+.contact-list {
+  margin-top: 10px;
+  height: 823px;
+  overflow: auto;
+  background-color: #fff;
+  min-height: 100%;
+  @media (max-width:1400px) {
+    height: calc(100vh - 74px);
+  }
+  .wrapper-contact {
+    height: 72px;
+    padding: 10px 13px;
+    display: flex;
+    align-items: stretch;
+    cursor: pointer;
+    background-color: #fff;
+    &:hover {
+      background-color: #f5f6f6;
+    }
+
+    img {
+      border-radius: 50%;
+    }
+    .wrapper-name-contact {
+      border-bottom: solid 1px #eee;
+      width: 100%;
+      margin-left: 10px;
+
+      .name-contact {
+        line-height: 21px;
+        font-size: 15px;
+        color: #111b21;
+      }
+    }
+  }
+}
