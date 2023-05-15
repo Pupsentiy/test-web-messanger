@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import Button from "../../components/button/Button";
 import {
   fetchGetChats,
@@ -8,6 +8,7 @@ import {
   fetchGetMessage,
   fetchGetStateInstance,
   fetchGetReceiveNotification,
+  fetchDelDeleteNotification,
 } from "../../api/fetchWrappers";
 
 import chat from "../../assets/img/chat.svg";
@@ -40,7 +41,7 @@ export type TContact = {
   notSpam: boolean;
 };
 
-export type TMessagesSelectedContact = {
+export type THistorySelectedContact = {
   chatId: string;
   idMessage: string;
   sendByApi: boolean;
@@ -54,12 +55,23 @@ export type TMessagesSelectedContact = {
 export type TGetMessage = {
   chatId: string;
   idMessage: string;
-  senderId: string;
-  senderName: string;
+  statusMessage: string;
+  sendByApi: boolean;
   textMessage: string;
   timestamp: number;
   type: string;
   typeMessage: string;
+  extendedTextMessage?: TextendedTextMessage;
+};
+
+export type TextendedTextMessage = {
+  text: string;
+  description: string;
+  title: string;
+  previewType: string;
+  jpegThumbnail: string;
+  forwardingScore: null;
+  isForwarded: null;
 };
 
 export type TNotification = {
@@ -72,8 +84,8 @@ export type TNotification = {
 const MessengerPage = () => {
   const navigate = useNavigate();
   const [allChats, setAllChats] = useState<TContact[]>([]);
-  const [messagesSelectedContact, setMessagesSelectedContact] = useState<
-    TMessagesSelectedContact[]
+  const [historySelectedContact, setHistorySelectedContact] = useState<
+    THistorySelectedContact[]
   >([]);
   const [notification, setNotification] =
     useState<TFetchGetReceiveNotification | null>(null);
@@ -81,7 +93,18 @@ const MessengerPage = () => {
     name: "",
     id: "",
   });
-  const [getLastMessage, setGetLastMessage] = useState<TGetMessage | null>(null);
+  const [getLastMessage, setGetLastMessage] = useState<TGetMessage | null>(
+    null
+  );
+
+    const [chat,setChat] = useState<any>([])
+    const [contactState,setContactState] = useState<any>({
+      chatId:'',
+      name:'',
+      messages:[]
+    })
+
+
 
   const logout = () => {
     localStorage.removeItem("auth");
@@ -91,6 +114,7 @@ const MessengerPage = () => {
   const getChats = async () => {
     const contacts = await fetchGetContacts();
     const chats = await fetchGetChats();
+    fetchGetStateInstance();
     const contactsChange: TContact[] = chats?.map((chat: TContact) => {
       contacts?.map((contact: TChat) => {
         if (contact.id === chat.id) {
@@ -100,37 +124,69 @@ const MessengerPage = () => {
       });
       return chat;
     });
-    console.log(contactsChange);
 
     setAllChats(contactsChange);
   };
 
-  useEffect(() => {
-    getChats();
-    fetchGetStateInstance();
-  }, []);
+  // useEffect(() => {
+  //   getChats();
+  // }, []);
 
-  const getMessage = async () =>{
-   const res  = await fetchGetMessage(
+  const getMessage = async () => {
+    const res = await fetchGetMessage(
       notification?.body?.idMessage,
       notification?.body?.senderData?.chatId
     );
-    console.log(res)
-    setGetLastMessage(res)
-  }
-
-  useEffect(() => {
-    if (notification) {
-      getMessage()
-     
+    if (res) {
+      setGetLastMessage(res);
     }
-  }, [notification]);
+  };
 
-  console.log(notification);
+  const updateChat = () => {
+    if (getLastMessage) {
+      // const hystory = await fetchGetChatHistory(getLastMessage.chatId);
+      // setHistorySelectedContact(hystory);
+      // setHistorySelectedContact({[getLastMessage,...historySelectedContact]})
+      console.log(getLastMessage);
+
+      if (selectedContact.id === getLastMessage.chatId) {
+        setHistorySelectedContact([getLastMessage, ...historySelectedContact]);
+      }
+    }
+  };
+  // useEffect(() => {
+  //   if (notification !== null) {
+  //     getMessage();
+  //     fetchDelDeleteNotification(notification.receiptId);
+  //     updateChat();
+  //   }
+  // }, [notification]);
+
+  // console.log(notification);
+  console.log(historySelectedContact);
+
+  const onChangeFields =(e:any)=>{
+      const {name, value} = e.target
+      setContactState({
+        ...contactState,
+        [name]: value,
+      })
+  } 
+
+  const addContact =() => {
+    setChat([...chat,contactState])
+  }
+  console.log(chat)
   return (
     <div className="messenger">
       <div className="wrapper-contact-list">
         <header className="header-contact-list">
+            <input type="text" name="chatId"  onChange={((e:any) => onChangeFields(e))}/>
+            <input type="text" name="name" onChange={(e:any) => onChangeFields(e)} />
+          <button onClick={()=>addContact()}>send</button>
+
+
+
           <Button type="button" classProps="button-chat">
             {/* <img src={chat} alt="chat" onClick={() => fetchGetMessage()} /> */}
           </Button>
@@ -140,9 +196,9 @@ const MessengerPage = () => {
         </header>
         <div>
           <ContactList
-            contacts={allChats}
+            contacts={chat}
             setSelectedContact={setSelectedContact}
-            setMessagesSelectedContact={setMessagesSelectedContact}
+            setHistorySelectedContact={setHistorySelectedContact}
           />
           <Timer
             onTimeOut={fetchGetReceiveNotification}
@@ -152,7 +208,7 @@ const MessengerPage = () => {
         </div>
       </div>
       <PlaceMessages
-        messagesSelectedContact={messagesSelectedContact}
+        historySelectedContact={historySelectedContact}
         selectedContact={selectedContact}
       />
     </div>

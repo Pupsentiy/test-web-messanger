@@ -4,15 +4,15 @@ import "./ContactList.scss";
 import { fetchGetChatHistory } from "../../api/fetchWrappers";
 import {
   TContact,
-  TMessagesSelectedContact,
+  THistorySelectedContact,
   TSelectedContact,
 } from "../../pages/MessengerPage/MessengerPage";
 import ava from "../../assets/img/avatar.svg";
 
 export type TContactListProps = {
   contacts: any[];
-  setMessagesSelectedContact: React.Dispatch<
-    React.SetStateAction<TMessagesSelectedContact[]>
+  setHistorySelectedContact: React.Dispatch<
+    React.SetStateAction<THistorySelectedContact[]>
   >;
   setSelectedContact: React.Dispatch<React.SetStateAction<TSelectedContact>>;
 };
@@ -20,12 +20,13 @@ export type TContactListProps = {
 const ContactList: FC<TContactListProps> = ({
   contacts,
   setSelectedContact,
-  setMessagesSelectedContact,
+  setHistorySelectedContact,
 }) => {
   const getChatHistory = async (contact: TContact) => {
     const messageList = await fetchGetChatHistory(contact.id);
     setSelectedContact({ name: contact.name, id: contact.id });
-    setMessagesSelectedContact(messageList);
+    // console.log(messageList,'messageList')
+    setHistorySelectedContact(messageList);
   };
 
   return (

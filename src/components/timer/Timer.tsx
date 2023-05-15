@@ -14,7 +14,7 @@ const Timer = ({ onTimeOut, setNotification, notification }: Props) => {
     if (res?.receiptId !== notification?.receiptId) {
       setNotification(res);
     }
-    if (res.body || !res) {
+    if (res || !res) {
       setSecond(4);
     }
   };
