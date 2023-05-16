@@ -74,3 +74,41 @@ export interface AxiosResponse<T = any>  {
   config: AxiosRequestConfig;
   request?: any;
 }
+
+export type TSelectedContact = {
+  chatId: string;
+  name: string;
+};
+
+export type THistorySelectedContact = {
+  chatId: string;
+  idMessage: string;
+  sendByApi: boolean;
+  statusMessage: string;
+  textMessage: string;
+  timestamp: number;
+  type: string;
+  typeMessage: string;
+};
+
+export type TGetMessage = {
+  chatId: string;
+  idMessage: string;
+  statusMessage: string;
+  sendByApi: boolean;
+  textMessage: string;
+  timestamp: number;
+  type: string;
+  typeMessage: string;
+  extendedTextMessage?: TextendedTextMessage;
+};
+
+export type TextendedTextMessage = {
+  text: string;
+  description: string;
+  title: string;
+  previewType: string;
+  jpegThumbnail: string;
+  forwardingScore: null;
+  isForwarded: null;
+};

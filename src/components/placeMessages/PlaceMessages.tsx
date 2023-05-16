@@ -1,16 +1,13 @@
 import React, { FC, useState } from "react";
 
 import "./PlaceMessages.scss";
-import {
-  TGetMessage,
-  THistorySelectedContact,
-  TSelectedContact,
-} from "../../pages/MessengerPage/MessengerPage";
+
 import useDebounce from "../../hooks/hooks";
 import {
   fetchSendMessage,
 } from "../../api/fetchWrappers";
 import Button from "../button/Button";
+import { THistorySelectedContact, TSelectedContact, TGetMessage } from "../../@types/global";
 
 export type TPlaceMessagesProps = {
   historySelectedContact: THistorySelectedContact[];

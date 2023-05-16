@@ -2,11 +2,9 @@ import { FC } from "react";
 
 import "./ContactList.scss";
 import { fetchGetChatHistory } from "../../api/fetchWrappers";
-import {
-  THistorySelectedContact,
-  TSelectedContact,
-} from "../../pages/MessengerPage/MessengerPage";
+
 import ava from "../../assets/img/avatar.svg";
+import { TSelectedContact, THistorySelectedContact } from "../../@types/global";
 
 export type TContactListProps = {
   contacts: TSelectedContact[];
