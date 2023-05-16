@@ -3,14 +3,15 @@ import React, { Dispatch, FC, SetStateAction } from "react";
 import "./Modal.scss";
 import Input from "../input/Input";
 import Button from "../button/Button";
+import { TSelectedContact } from "../../@types/global";
 
 export type TModal = {
   active: boolean;
   setActive: Dispatch<SetStateAction<boolean>>;
-  onChangeFields: any;
+  onChangeFields: (e: React.ChangeEvent<HTMLInputElement>) => void;
   addContact: () => void;
-  contactState: any;
-  setContactState: any;
+  contactState: TSelectedContact;
+  setContactState: Dispatch<SetStateAction<TSelectedContact>>;
 };
 
 const Modal: FC<TModal> = ({
@@ -21,7 +22,7 @@ const Modal: FC<TModal> = ({
   contactState,
   setContactState,
 }) => {
-  const closeModal = (e: any) => {
+  const closeModal = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     addContact();
     if (contactState.name !== "" && contactState.chatId !== "") {
@@ -36,7 +37,7 @@ const Modal: FC<TModal> = ({
   return (
     <div
       className={active ? "modal active" : "modal"}
-      onClick={() => setActive(false)} 
+      onClick={() => setActive(false)}
     >
       <div
         className={active ? "modal__content active" : "modal__content"}
@@ -50,7 +51,9 @@ const Modal: FC<TModal> = ({
             value={contactState["chatId"]}
             classInput="modal-input"
             classLabel="modal-input-label"
-            onChange={(e: any) => onChangeFields(e)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              onChangeFields(e)
+            }
           />
           <Input
             htmlFor="Имя"
@@ -59,7 +62,9 @@ const Modal: FC<TModal> = ({
             value={contactState["name"]}
             classInput="modal-input"
             classLabel="modal-input-label"
-            onChange={(e: any) => onChangeFields(e)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              onChangeFields(e)
+            }
           />
           <Button type="submit" classProps={""}>
             Send

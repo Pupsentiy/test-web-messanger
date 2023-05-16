@@ -13,12 +13,19 @@
       align-items: center;
       border-radius: 10px;
       box-shadow: 0 6px 18px rgba(11,20,26,.05);
-      input {
-        max-width: 300px;
-        margin-bottom: 20px;
-        padding: 5px 6px;
-        border-radius: 3px;
+      .modal-input{
+        border: 1px solid black ;
+        border-radius: 6px;
+        width: 250px;
+        padding: 5px 6px 7px 8px;
+      }
+  
+      .modal-input-label{
+        font-size: 12px;
+        margin-bottom: 4px;
       }
     }
+
+
   }
 }

@@ -4,15 +4,9 @@ import "./ContactList.scss";
 import { fetchGetChatHistory } from "../../api/fetchWrappers";
 
 import ava from "../../assets/img/avatar.svg";
-import { TSelectedContact, THistorySelectedContact } from "../../@types/global";
+import { TSelectedContact, TContactListProps } from "../../@types/global";
 
-export type TContactListProps = {
-  contacts: TSelectedContact[];
-  setHistorySelectedContact: React.Dispatch<
-    React.SetStateAction<THistorySelectedContact[]>
-  >;
-  setSelectedContact: React.Dispatch<React.SetStateAction<TSelectedContact>>;
-};
+
 
 const ContactList: FC<TContactListProps> = ({
   contacts,

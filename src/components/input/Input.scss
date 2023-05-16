@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
+  width: 100%;
   .input-error {
     margin-bottom: 16px;
     font-style: normal;
@@ -9,5 +10,6 @@
     font-size: 12px;
     line-height: 14px;
     color: #eb1717;
+    display: none;
   }
 }

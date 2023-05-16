@@ -77,12 +77,11 @@ const Main: FC = () => {
 
   useEffect(() => {
     if (notification) {
-      
       getMessage(notification);
 
       fetchDelDeleteNotification(notification.receiptId);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notification]);
 
   const onChangeFields = (e: React.ChangeEvent<HTMLInputElement>) => {

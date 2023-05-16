@@ -112,3 +112,17 @@ export type TextendedTextMessage = {
   forwardingScore: null;
   isForwarded: null;
 };
+
+export type TPlaceMessagesProps = {
+  historySelectedContact: THistorySelectedContact[];
+  selectedContact: TSelectedContact;
+  checkAuth: string;
+};
+
+export type TContactListProps = {
+  contacts: TSelectedContact[];
+  setHistorySelectedContact: React.Dispatch<
+    React.SetStateAction<THistorySelectedContact[]>
+  >;
+  setSelectedContact: React.Dispatch<React.SetStateAction<TSelectedContact>>;
+};

@@ -9,6 +9,7 @@ import {
 } from "../../core/helpers/localStorage.helpers";
 
 import "./LoginPage.scss";
+import Input from "../../components/input/Input";
 
 export type TAuth = {
   idInstance: string;
@@ -58,22 +59,19 @@ const LoginPage = () => {
           action=""
           onSubmit={(e: React.FormEvent<HTMLFormElement>) => authorization(e)}
         >
-          <input
+          <Input
             type="text"
             name="idInstance"
-            placeholder="idInstance"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              getValueInput(e)
-            }
-          />
-          <input
+            classInput="modal-input"
+            classLabel="modal-input-label"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => getValueInput(e)} htmlFor={"idInstance"}          />
+            
+          <Input
             type="text"
             name="apiTokenInstance"
-            placeholder="apiTokenInstance"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              getValueInput(e)
-            }
-          />
+            classInput="modal-input"
+            classLabel="modal-input-label"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => getValueInput(e)} htmlFor={"apiTokenInstance"}          />
 
           <Button type="submit" classProps="btn-login">
             Login

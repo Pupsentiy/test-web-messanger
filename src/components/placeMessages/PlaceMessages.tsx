@@ -1,19 +1,10 @@
 import React, { FC, useState } from "react";
 
-import "./PlaceMessages.scss";
-
 import useDebounce from "../../hooks/hooks";
-import {
-  fetchSendMessage,
-} from "../../api/fetchWrappers";
+import { fetchSendMessage } from "../../api/fetchWrappers";
 import Button from "../button/Button";
-import { THistorySelectedContact, TSelectedContact, TGetMessage } from "../../@types/global";
-
-export type TPlaceMessagesProps = {
-  historySelectedContact: THistorySelectedContact[];
-  selectedContact: TSelectedContact;
-  checkAuth: string;
-};
+import { TGetMessage, TPlaceMessagesProps } from "../../@types/global";
+import Input from "../input/Input";
 
 const PlaceMessages: FC<TPlaceMessagesProps> = ({
   historySelectedContact,
@@ -57,13 +48,16 @@ const PlaceMessages: FC<TPlaceMessagesProps> = ({
               ))}
           </div>
           <div className="input-message">
-            <input
+            <Input
               type="text"
               placeholder="Введите сообщение"
               value={message}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 getMessage(e)
               }
+              htmlFor={""}
+              classInput="inputs"
+              classLabel="label"
             />
             <Button type="button" classProps="" onClick={() => sendMessage()}>
               Отправить
@@ -71,7 +65,9 @@ const PlaceMessages: FC<TPlaceMessagesProps> = ({
           </div>
         </>
       ) : (
-        <h3>авторизуйтесь на сайте green-api.com, с помощью аккаунта whatsapp</h3>
+        <h3>
+          авторизуйтесь на сайте green-api.com, с помощью аккаунта whatsapp
+        </h3>
       )}
     </div>
   );
