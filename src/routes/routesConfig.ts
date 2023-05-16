@@ -1,5 +1,4 @@
 
-import { MemoExoticComponent } from "react";
 import LoginPage from "../pages/loginPage/LoginPage";
 import MessengerPage from "../pages/MessengerPage/MessengerPage";
 
