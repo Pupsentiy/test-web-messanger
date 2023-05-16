@@ -9,7 +9,6 @@ import {
 } from "../../core/helpers/localStorage.helpers";
 
 import "./LoginPage.scss";
-import { fetchGetReceiveNotification } from "../../api/fetchWrappers";
 
 export type TAuth = {
   idInstance: string;

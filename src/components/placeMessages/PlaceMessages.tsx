@@ -2,46 +2,49 @@ import React, { FC, useState } from "react";
 
 import "./PlaceMessages.scss";
 import {
+  TGetMessage,
   THistorySelectedContact,
   TSelectedContact,
 } from "../../pages/MessengerPage/MessengerPage";
 import useDebounce from "../../hooks/hooks";
-import { fetchGetChatHistory, fetchSendMessage } from "../../api/fetchWrappers";
+import {
+  fetchSendMessage,
+} from "../../api/fetchWrappers";
 import Button from "../button/Button";
 
 export type TPlaceMessagesProps = {
   historySelectedContact: THistorySelectedContact[];
   selectedContact: TSelectedContact;
+  checkAuth: string;
 };
 
 const PlaceMessages: FC<TPlaceMessagesProps> = ({
   historySelectedContact,
   selectedContact,
+  checkAuth,
 }) => {
-  const [message, setMessage] = useState("");
-  const debouncedValue = useDebounce<string>(message, 500);
-
+  const [message, setMessage] = useState<string>("");
+  const debouncedValue = useDebounce<string>(message, 250);
   const getMessage = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   };
-
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (message === "") {
       return;
     }
-    fetchSendMessage(selectedContact.id, debouncedValue);
+
+    await fetchSendMessage(selectedContact.chatId, debouncedValue);
     setMessage("");
-    
   };
 
   return (
     <div className="wrapper-place-message">
       <header className="header-place-message">{selectedContact.name}</header>
-      {historySelectedContact?.length ? (
+      {checkAuth !== "notAuthorized" ? (
         <>
           <div className="wrapper-place-message">
             {historySelectedContact &&
-              historySelectedContact.map((message: any, i: number) => (
+              historySelectedContact.map((message: TGetMessage, i: number) => (
                 <div
                   className={
                     !message.hasOwnProperty("textMessage")
@@ -71,7 +74,7 @@ const PlaceMessages: FC<TPlaceMessagesProps> = ({
           </div>
         </>
       ) : (
-        <h1>Выберите контакт</h1>
+        <h3>авторизуйтесь на сайте green-api.com, с помощью аккаунта whatsapp</h3>
       )}
     </div>
   );

@@ -1,9 +1,7 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import {
   apiTokenInstance,
-  urlGetChats,
   urlSendMessage,
-  urlGetContacts,
   urlGetChatHistory,
   urlGetChatMessage,
   urlGetReceiveNotification,
@@ -12,10 +10,10 @@ import {
 } from "../core/constants/constants";
 
 export const fetchSendMessage = async (name: string, message: string) => {
-  const data = JSON.stringify({
+  const data = {
     chatId: name,
     message: message,
-  });
+  };
 
   const config = {
     method: "post",
@@ -35,48 +33,10 @@ export const fetchSendMessage = async (name: string, message: string) => {
   }
 };
 
-export const fetchGetChats = async () => {
-  const config = {
-    method: "get",
-    url: urlGetChats,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: ` Bearer ${apiTokenInstance}`,
-    },
-  };
-
-  try {
-    const { data } = await axios(config);
-    // console.log(data, "axios getChats");
-    return data;
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-export const fetchGetContacts = async () => {
-  const config = {
-    method: "get",
-    url: urlGetContacts,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: ` Bearer ${apiTokenInstance}`,
-    },
-  };
-
-  try {
-    const { data } = await axios(config);
-    // console.log(data, "axios getChats");
-    return data;
-  } catch (e) {
-    console.log(e);
-  }
-};
-
 export const fetchGetChatHistory = async (id: string) => {
-  const data = JSON.stringify({
+  const data = {
     chatId: id,
-  });
+  };
 
   const config = {
     method: "post",
@@ -90,19 +50,21 @@ export const fetchGetChatHistory = async (id: string) => {
 
   try {
     const responce = await axios(config);
-    // console.log(responce);
+    console.log(responce.data)
     return responce.data;
-    // console.log(data, "axios post");
   } catch (e) {
     console.log(e);
   }
 };
 
-export const fetchGetMessage = async (idMessage: string | undefined,chatId: string | undefined) => {
-  const data = JSON.stringify({
+export const fetchGetMessage = async (
+  idMessage: string | undefined,
+  chatId: string | undefined
+) => {
+  const data = {
     chatId: chatId,
     idMessage: idMessage,
-  });
+  };
 
   const config = {
     method: "post",
@@ -116,9 +78,7 @@ export const fetchGetMessage = async (idMessage: string | undefined,chatId: stri
 
   try {
     const responce = await axios(config);
-    // console.log(responce,'getMessage');
     return responce.data;
-    // console.log(data, "axios post");
   } catch (e) {
     console.log(e);
   }
@@ -135,17 +95,14 @@ export const fetchGetReceiveNotification = async () => {
   };
 
   try {
-    const { data } = await axios(config);
-    // console.log(data, "axios fetchGetReceiveNotification");
+    const { data }: AxiosResponse = await axios(config);
     return data;
   } catch (e) {
     console.log(e);
   }
 };
 
-export const fetchDelDeleteNotification = async (idMessage: any) => {
-  
-
+export const fetchDelDeleteNotification = async (idMessage: number) => {
   const config = {
     method: "delete",
     url: urlDelDeleteNotification + idMessage,
@@ -157,7 +114,6 @@ export const fetchDelDeleteNotification = async (idMessage: any) => {
 
   try {
     const { data } = await axios(config);
-    // console.log(data, "axios getChats");
     return data;
   } catch (e) {
     console.log(e);
@@ -175,9 +131,9 @@ export const fetchGetStateInstance = async () => {
   };
 
   try {
-    const { data } = await axios(config);
-    console.log(data, "authorized");
-    return data;
+    const responce = await axios(config);
+    console.log(responce)
+    return responce;
   } catch (e) {
     console.log(e, "notAuthorized");
   }

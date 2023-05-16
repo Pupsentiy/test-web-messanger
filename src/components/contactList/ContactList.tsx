@@ -3,14 +3,13 @@ import { FC } from "react";
 import "./ContactList.scss";
 import { fetchGetChatHistory } from "../../api/fetchWrappers";
 import {
-  TContact,
   THistorySelectedContact,
   TSelectedContact,
 } from "../../pages/MessengerPage/MessengerPage";
 import ava from "../../assets/img/avatar.svg";
 
 export type TContactListProps = {
-  contacts: any[];
+  contacts: TSelectedContact[];
   setHistorySelectedContact: React.Dispatch<
     React.SetStateAction<THistorySelectedContact[]>
   >;
@@ -22,17 +21,17 @@ const ContactList: FC<TContactListProps> = ({
   setSelectedContact,
   setHistorySelectedContact,
 }) => {
-  const getChatHistory = async (contact: TContact) => {
-    const messageList = await fetchGetChatHistory(contact.id);
-    setSelectedContact({ name: contact.name, id: contact.id });
-    // console.log(messageList,'messageList')
+  const getChatHistory = async (contact: TSelectedContact) => {
+    const updateChatId = contact.chatId + "@c.us";
+    const messageList = await fetchGetChatHistory(updateChatId);
+    setSelectedContact({ name: contact.name, chatId: updateChatId });
     setHistorySelectedContact(messageList);
   };
 
   return (
     <div className="contact-list">
       {contacts &&
-        contacts.map((contact: TContact, i: number) => (
+        contacts.map((contact: TSelectedContact, i: number) => (
           <div
             className="wrapper-contact"
             key={i}
@@ -42,11 +41,7 @@ const ContactList: FC<TContactListProps> = ({
           >
             <img src={ava} alt="" />
             <div className="wrapper-name-contact">
-              <span className="name-contact">
-                {contact?.name !== undefined
-                  ? contact?.name
-                  : "+" + contact.id.substring(0, 11)}
-              </span>
+              <span className="name-contact">{contact?.name}</span>
             </div>
           </div>
         ))}

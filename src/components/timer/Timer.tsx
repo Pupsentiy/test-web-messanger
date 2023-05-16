@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { INotification } from "../../@types/global";
 
 interface Props {
-  onTimeOut: () => void;
-  setNotification: any;
-  notification: any;
+  onTimeOut: () => Promise<INotification> ;
+  setNotification: React.Dispatch<React.SetStateAction<INotification | null>>;
+  notification: INotification | null;
 }
 
 const Timer = ({ onTimeOut, setNotification, notification }: Props) => {
   const [second, setSecond] = useState<number>(4);
 
   const isTimer = async () => {
-    const res: any = await onTimeOut();
+    const res = await onTimeOut();
     if (res?.receiptId !== notification?.receiptId) {
       setNotification(res);
     }

@@ -1,44 +1,29 @@
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../components/button/Button";
 import {
-  fetchGetChats,
-  fetchGetContacts,
-  fetchGetChatHistory,
-  fetchSendMessage,
   fetchGetMessage,
   fetchGetStateInstance,
   fetchGetReceiveNotification,
   fetchDelDeleteNotification,
 } from "../../api/fetchWrappers";
 
-import chat from "../../assets/img/chat.svg";
+import chatttt from "../../assets/img/chat.svg";
 import logoutImg from "../../assets/img/logout.svg";
 import "./MessengerPage.scss";
 import { useNavigate } from "react-router-dom";
-import useDebounce from "../../hooks/hooks";
 import ContactList from "../../components/contactList/ContactList";
 import PlaceMessages from "../../components/placeMessages/PlaceMessages";
 import Timer from "../../components/timer/Timer";
-import { TFetchGetReceiveNotification } from "../../components/timer/Timer.types";
+import {
+  getFromLocalStorage,
+  saveToLocalStorage,
+} from "../../core/helpers/localStorage.helpers";
+import Modal from "../../components/modal/Modal";
+import { INotification } from "../../@types/global";
 
 export type TSelectedContact = {
-  id: string;
+  chatId: string;
   name: string;
-};
-
-export type TChat = {
-  id: string;
-  name: string;
-  type: string;
-};
-
-export type TContact = {
-  archive: boolean;
-  ephemeralExpiration: number;
-  ephemeralSettingTimestamp: number;
-  id: string;
-  name: string;
-  notSpam: boolean;
 };
 
 export type THistorySelectedContact = {
@@ -74,121 +59,98 @@ export type TextendedTextMessage = {
   isForwarded: null;
 };
 
-export type TNotification = {
-  chatId: string;
-  chatName: string;
-  sender: string;
-  senderName: string;
-};
-
 const MessengerPage = () => {
   const navigate = useNavigate();
-  const [allChats, setAllChats] = useState<TContact[]>([]);
+  const [modalActive, setModalActive] = useState<boolean>(false);
   const [historySelectedContact, setHistorySelectedContact] = useState<
     THistorySelectedContact[]
   >([]);
-  const [notification, setNotification] =
-    useState<TFetchGetReceiveNotification | null>(null);
+  const [notification, setNotification] = useState<INotification | null>(null);
   const [selectedContact, setSelectedContact] = useState<TSelectedContact>({
     name: "",
-    id: "",
+    chatId: "",
   });
-  const [getLastMessage, setGetLastMessage] = useState<TGetMessage | null>(
-    null
+  const [chat, setChat] = useState<TSelectedContact[]>(
+    getFromLocalStorage("chat")
+      ? JSON.parse(getFromLocalStorage("chat") || "{}")
+      : []
   );
+  const [contactState, setContactState] = useState<TSelectedContact>({
+    chatId: "",
+    name: "",
+  });
 
-    const [chat,setChat] = useState<any>([])
-    const [contactState,setContactState] = useState<any>({
-      chatId:'',
-      name:'',
-      messages:[]
-    })
-
+  const [checkAuth, setChekAuth] = useState("");
 
 
   const logout = () => {
     localStorage.removeItem("auth");
+    localStorage.removeItem("chat");
     navigate("/");
   };
 
-  const getChats = async () => {
-    const contacts = await fetchGetContacts();
-    const chats = await fetchGetChats();
-    fetchGetStateInstance();
-    const contactsChange: TContact[] = chats?.map((chat: TContact) => {
-      contacts?.map((contact: TChat) => {
-        if (contact.id === chat.id) {
-          chat.name = contact.name;
-        }
-        return contact;
-      });
-      return chat;
-    });
-
-    setAllChats(contactsChange);
-  };
-
-  // useEffect(() => {
-  //   getChats();
-  // }, []);
-
-  const getMessage = async () => {
-    const res = await fetchGetMessage(
-      notification?.body?.idMessage,
-      notification?.body?.senderData?.chatId
-    );
-    if (res) {
-      setGetLastMessage(res);
-    }
-  };
-
-  const updateChat = () => {
-    if (getLastMessage) {
-      // const hystory = await fetchGetChatHistory(getLastMessage.chatId);
-      // setHistorySelectedContact(hystory);
-      // setHistorySelectedContact({[getLastMessage,...historySelectedContact]})
-      console.log(getLastMessage);
-
-      if (selectedContact.id === getLastMessage.chatId) {
-        setHistorySelectedContact([getLastMessage, ...historySelectedContact]);
-      }
-    }
-  };
-  // useEffect(() => {
-  //   if (notification !== null) {
-  //     getMessage();
-  //     fetchDelDeleteNotification(notification.receiptId);
-  //     updateChat();
-  //   }
-  // }, [notification]);
-
-  // console.log(notification);
-  console.log(historySelectedContact);
-
-  const onChangeFields =(e:any)=>{
-      const {name, value} = e.target
-      setContactState({
-        ...contactState,
-        [name]: value,
-      })
-  } 
-
-  const addContact =() => {
-    setChat([...chat,contactState])
+  const getInstance = async () => {
+    const check = await fetchGetStateInstance();
+    setChekAuth(check?.data.stateInstance)
   }
-  console.log(chat)
+  
+
+  useEffect(() => {
+    if (notification) {
+      const getMessage = async (notificationProps: {
+        body: {
+          idMessage: string | undefined;
+          senderData: { chatId: string | undefined };
+        };
+      }) => {
+        const res = await fetchGetMessage(
+          notificationProps?.body?.idMessage,
+          notificationProps?.body?.senderData?.chatId
+        );
+        if (res) {
+          if (selectedContact.chatId === res.chatId) {
+            setHistorySelectedContact([res, ...historySelectedContact]);
+          }
+        }
+      };
+      getMessage(notification);
+
+      fetchDelDeleteNotification(notification.receiptId);
+    }
+  }, [notification]);
+
+  const onChangeFields = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setContactState({
+      ...contactState,
+      [name]: value,
+    });
+  };
+
+  const addContact = () => {
+    if (contactState.name !== "" && contactState.chatId !== "") {
+      setChat([...chat, contactState]);
+    }
+  };
+
+  
+
+  useEffect(() => {
+    if (chat.length) {
+      saveToLocalStorage(chat, "chat");
+    }
+    getInstance()
+  }, [chat]);
   return (
     <div className="messenger">
       <div className="wrapper-contact-list">
         <header className="header-contact-list">
-            <input type="text" name="chatId"  onChange={((e:any) => onChangeFields(e))}/>
-            <input type="text" name="name" onChange={(e:any) => onChangeFields(e)} />
-          <button onClick={()=>addContact()}>send</button>
-
-
-
           <Button type="button" classProps="button-chat">
-            {/* <img src={chat} alt="chat" onClick={() => fetchGetMessage()} /> */}
+            <img
+              src={chatttt}
+              alt="chat"
+              onClick={() => setModalActive(true)}
+            />
           </Button>
           <Button type="button" classProps="" onClick={() => logout()}>
             <img src={logoutImg} alt="logout" />
@@ -210,6 +172,16 @@ const MessengerPage = () => {
       <PlaceMessages
         historySelectedContact={historySelectedContact}
         selectedContact={selectedContact}
+        checkAuth={checkAuth}
+      />
+
+      <Modal
+        active={modalActive}
+        setActive={setModalActive}
+        onChangeFields={onChangeFields}
+        addContact={addContact}
+        contactState={contactState}
+        setContactState={setContactState}
       />
     </div>
   );

@@ -9,8 +9,6 @@ export const idInstance: string = dataAuth.idInstance;
 export const apiTokenInstance: string = dataAuth.apiTokenInstance;
 
 export const urlSendMessage: string = `${host}/waInstance${idInstance}/SendMessage/${apiTokenInstance}`;
-export const urlGetChats: string = `${host}/waInstance${idInstance}/GetChats/${apiTokenInstance}`;
-export const urlGetContacts: string = `${host}/waInstance${idInstance}/GetContacts/${apiTokenInstance}`;
 export const urlGetChatHistory: string = `${host}/waInstance${idInstance}/GetChatHistory/${apiTokenInstance}`;
 export const urlGetChatMessage: string = `${host}/waInstance${idInstance}/getMessage/${apiTokenInstance}`;
 export const urlGetReceiveNotification: string = `${host}/waInstance${idInstance}/receiveNotification/${apiTokenInstance}`;

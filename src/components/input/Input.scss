@@ -1,0 +1,13 @@
+.input-conteiner {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  .input-error {
+    margin-bottom: 16px;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 14px;
+    color: #eb1717;
+  }
+}
